@@ -21,7 +21,11 @@ class AuthService{
         $token = $user->createToken("User: " . $user->email);
 
         return [
-            "user" => $user,
+            "user" => [
+                "email" => $user->email,
+                "lastname" => $user->lastname,
+                "firstname" => $user->firstname
+            ],
             "access_token" => $token
         ];
     }
