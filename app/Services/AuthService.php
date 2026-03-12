@@ -101,13 +101,15 @@ class AuthService{
         $token = $createdUser->createToken('Token Register User: '. $$createdUser->email);
             return [
                 "success" => true,
-                "user" => [
-                    "email" => $createdUser->email,
-                    "lastname" => $createdUser->lastname,
-                    "firstname" => $createdUser->firstname,
-                    "role" => $createdUser->role
-                ],
-                "token" => $token
+                "data" => [
+                        "user" => [
+                        "email" => $createdUser->email,
+                        "lastname" => $createdUser->lastname,
+                        "firstname" => $createdUser->firstname,
+                        "role" => $createdUser->role
+                    ],
+                    "token" => $token
+                ]
             ];
         } 
     }

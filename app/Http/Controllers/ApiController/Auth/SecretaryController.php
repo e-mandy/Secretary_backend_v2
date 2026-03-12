@@ -51,9 +51,26 @@ class SecretaryController extends Controller
         }
     }
 
-    public function verify(){
-        return response()->json([
-            "message" => "Everything is getting good"
-        ], 200);
+    public function verify($id, $hash){
+        try{
+            $response = $this->service->verifyEmail($id, $hash);
+
+            if(!$response['success']) {
+                return response()->json([
+                    "message" => "Email déjà vérifié",
+            ], 400);
+            }else{
+                return response()->json([
+                    "message" => "Utilisateur vérifié avec succès",
+                    "data" => [
+                        $response['data']
+                    ]
+                ], 200);
+            }
+        }catch(Exception $e){
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 403);
+        }
     }
 }
