@@ -1,8 +1,10 @@
+import Register from "./components/Register"
+
 function App() {
 
   return (
     <div>
-    <p>Ah bro</p>
+      <Register />
     </div>
   )
 }
