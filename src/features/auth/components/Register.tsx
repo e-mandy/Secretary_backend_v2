@@ -4,6 +4,7 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 import { registerSchema, type RegisterUser } from "../schemas/register.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Spinner from "../../../components/Spinner";
+import secretaryImg from "../../../assets/auth/secretary.jpeg";
 
 const Register = () => {
     const { mutate, isPending } = useRegister();
@@ -19,19 +20,10 @@ const Register = () => {
 
   return (
     <div className="h-screen relative flex">
-        <div className="absolute flex top-4 left-4">
-            <h2 className="font-bold text-2xl">Esgis Secretary</h2>
-        </div>
-        <div className="w-1/2 h-full bg-[url(assets/auth/auth.jpeg)] bg-cover flex">
-            <div className="my-auto w-3/4 ml-6">
-                <h3 className="font-extrabold text-3xl">École Supérieure de Gestion d'Informatique et des Sciences.</h3>
-                <p>Au service  de l'excellence académique et de l'inclusion professionnelle au Bénin.</p>
-            </div>
-        </div>
         <div className="w-1/2 h-screen flex">
             <div className="m-auto w-[55%]">
                 <div className="mb-10">
-                    <h2 className="text-4xl font-extrabold text-[#c41c2d]">Inscription</h2>
+                    <h2 className="text-4xl font-extrabold text-[#111624]">Inscription</h2>
                     <p>Bienvenue sur la plateforme de gestion du sécrétariat de Esgis</p>
                 </div>
                 <form onSubmit={handleSubmit(onSubmit)}>
@@ -79,13 +71,22 @@ const Register = () => {
                         </div>
                             {errors.password_confirmation?.message && (<span className="error-message">{errors.password_confirmation?.message}</span>)}
                     </div>
-                    <button type="submit" className="bg-[#111624] w-full text-white py-3 rounded-lg my-3 cursor-pointer active:bg-[#212a46] flex gap-3 justify-center">
+                    <button type="submit" className="bg-[#c41c2d] w-full text-white py-3 rounded-lg my-6 cursor-pointer active:bg-[#d15c68] flex gap-3 justify-center shadow-lg shadow-[#d15c68]">
                         {isPending && (<Spinner color="white" height="24" width="24" visible={true} />)}
                         <p>{ isPending ? "Chargement" : "S'inscrire en tant que sécrétaire" }</p>
                     </button>
-                    <p>Vous avez déjà un compte sécrétaire ? <span>Connectez-vous !!</span></p>
+                    <p>Vous avez déjà un compte sécrétaire ? <span className="text-[#c41c2d] font-semibold">Connectez-vous !!</span></p>
                 </form>
             </div>
+        </div>
+        <div className="w-1/2 h-full flex bg-linear-to-tl from-white to-[#F3E1E3]">
+        {/* <div className="absolute top-0 z-[-2] h-screen w-screen bg-white "></div> */}
+        
+        <div className="m-auto flex flex-col items-center">
+            <img className="w-70 h-70 rounded-lg mb-6" src={secretaryImg} alt="" />
+            <h2 className="text-2xl font-bold"></h2>
+        </div>
+            
         </div>
     </div>
   )
