@@ -6,7 +6,12 @@ import type { UserApiResponse } from "../schemas/auth_store.schema";
 import { useNavigate } from "react-router-dom";
 
 const verifyEmail = async(data: EmailVerifyData) => {
-    const response = await axiosInstance.get(`/secretary/email-verify/${data.id}/${data.hash}?expires=${data.expires}&signature=${data.signature}`);
+    const response = await axiosInstance.get(`/secretary/email-verify/${data.id}/${data.hash}`, {
+        params: {
+            expires: data.expires,
+            signature: data.signature
+        }
+    });
     return response.data;
 }
 
@@ -24,7 +29,7 @@ export const useEmailVerify = () => {
 
             setAuthStore(userData);
 
-            setTimeout(() => {
+            const timeoutId = setTimeout(() => {
                 navigate('/');
             }, 1000);
         }
