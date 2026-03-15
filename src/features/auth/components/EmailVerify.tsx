@@ -1,4 +1,4 @@
-import { Info, MailCheck, MailSearch, MoveLeft } from "lucide-react"
+import { MailCheck, MoveLeft } from "lucide-react"
 import { Link, useParams, useSearchParams } from "react-router-dom"
 
 const EmailVerify = () => {
