@@ -1,4 +1,3 @@
-import React from 'react'
 import { useLottie, useLottieInteractivity } from 'lottie-react'
 import SuccessData from "../assets/lotties/Success.json";
 
@@ -24,7 +23,7 @@ const Success = () => {
             }
         ]
     });
-    
+
     return Animation
 }
 

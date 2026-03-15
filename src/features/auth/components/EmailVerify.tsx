@@ -1,14 +1,6 @@
-import { MailCheck, MoveLeft } from "lucide-react"
-import { Link, useParams, useSearchParams } from "react-router-dom"
+import { Link, MailCheck, MoveLeft } from "lucide-react"
 
 const EmailVerify = () => {
-    // We pick the id and the hash from the link sent in the user email
-    const { id, hash } = useParams<{id: string, hash: string}>();
-
-    // We pick the expiration value and the verification link signature from the link
-    const [searchParams] = useSearchParams();
-    const expirationValue = searchParams.get('expires');
-    const signature = searchParams.get('signature');
 
   return (
     <div className="h-screen w-screen flex bg-[#F8F6F6]">
