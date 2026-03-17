@@ -15,7 +15,7 @@ export const useRegister = () => {
         mutationFn: register,
         onSuccess: (data) => {
             console.log(data);
-            navigate('/secretary/verify-email');
+            navigate('/secretary/email-sent');
         },
         onError: (error) => {
             console.log(error);

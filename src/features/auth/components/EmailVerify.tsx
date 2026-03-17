@@ -25,12 +25,12 @@ const EmailVerify = () => {
             expires: expirationValue,
             signature: signature
         });
-    });
+    }, []);
 
     useEffect(() => {
         const timeoutId = setTimeout(() => {
             navigate("/");
-        }, 2000);
+        }, 5000);
 
         return () => clearTimeout(timeoutId);
     }, [isSuccess, navigate])
@@ -43,7 +43,7 @@ const EmailVerify = () => {
     )
 
     if(isSuccess) return (
-        <div className="w-screen h-screen m-auto">
+        <div className="w-screen h-screen flex m-auto">
             <Success />
             <p>Bravo !! Votre email est vérifiée. Vous allez étre redirigé sur votre espace dans quelques instants.</p>
         </div>

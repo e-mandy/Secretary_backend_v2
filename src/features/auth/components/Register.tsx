@@ -5,6 +5,7 @@ import { registerSchema, type RegisterUser } from "../schemas/register.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Spinner from "../../../components/Spinner";
 import secretaryImg from "../../../assets/auth/secretary.jpeg";
+import Success from "../../../components/Success";
 
 const Register = () => {
     const { mutate, isPending } = useRegister();
@@ -25,6 +26,7 @@ const Register = () => {
                 <div className="mb-10">
                     <h2 className="text-4xl font-extrabold text-[#111624]">Inscription</h2>
                     <p>Bienvenue sur la plateforme de gestion du sécrétariat de Esgis</p>
+                    <Success />
                 </div>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="my-3">

@@ -20,6 +20,7 @@ export const useEmailVerify = () => {
     return useMutation({
         mutationFn: verifyEmail,
         onSuccess: (data) => {
+            console.log("Everything is good");
             const userData: UserApiResponse = {
                 user: data.user,
                 token: data.token
