@@ -26,5 +26,5 @@ class ProfessorService{
             "email" => $professor->email,
             "matters" => $professor->matters
         ];
-    }   
+    }
 }
