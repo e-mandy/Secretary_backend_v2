@@ -3,10 +3,16 @@
 namespace App\Services;
 
 use App\DTOs\Professor\ProfessorStoreDTO;
-use App\Http\Resources\MatterResource;
+use App\Http\Resources\ProfessorResource;
 use App\Models\Professor;
 
 class ProfessorService{
+    public function index(){
+        $professors = Professor::limit(10);
+
+        return ProfessorResource::collection($professors);
+    }
+
     public function store(ProfessorStoreDTO $data){
         $existingProf = Professor::where('email', $data->email)->first();
 
@@ -23,11 +29,6 @@ class ProfessorService{
         $professor->matters()->attach($data->matters);
         $professor->load('matters');
 
-        return [
-            "lastname" => $professor->lastname,
-            "firstname" => $professor->firstanme,
-            "email" => $professor->email,
-            "matters" => MatterResource::collection($professor->matters)
-        ];
+        return new ProfessorResource($professor);
     }
 }
