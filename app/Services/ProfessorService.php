@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\DTOs\Professor\ProfessorStoreDTO;
+use App\Http\Resources\MatterResource;
 use App\Models\Professor;
 
 class ProfessorService{
@@ -26,7 +27,7 @@ class ProfessorService{
             "lastname" => $professor->lastname,
             "firstname" => $professor->firstanme,
             "email" => $professor->email,
-            "matters" => $professor->matters
+            "matters" => MatterResource::collection($professor->matters)
         ];
     }
 }
