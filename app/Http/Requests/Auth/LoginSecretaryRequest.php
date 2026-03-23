@@ -25,7 +25,7 @@ class LoginSecretaryRequest extends FormRequest
         return [
             "email" => ["required", "string", "email"],
             "password" => [
-                "requried", 
+                "required", 
                 "string",
                 Password::min(8)
                     ->numbers()
