@@ -10,6 +10,7 @@ use App\Http\Requests\Auth\LoginSecretaryRequest;
 use App\Http\Requests\Auth\RegisterSecretaryRequest;
 use App\Services\AuthService;
 use Exception;
+use Illuminate\Http\Request;
 
 class SecretaryController extends Controller
 {
@@ -57,16 +58,32 @@ class SecretaryController extends Controller
         try{
             $response = $this->service->verifyEmail($data);
 
+            $cookie = cookie("accessToken", $response['data']['token'], env('APP_TOKEN_DURATION'));
             return response()->json([
                 "message" => "Utilisateur vérifié avec succès",
                 "data" => [
                     $response['data']
                 ]
-            ], 200);
+            ], 200)->withCookie($cookie);
         }catch(Exception $e){
             return response()->json([
                 'message' => $e->getMessage()
             ], 403);
         }
+    }
+
+    public function checkAuth(Request $request){
+        // If we receive the user, that means that the token is still active.
+        $user = $request->user();
+
+        $response = $this->service->check($user);
+
+        $cookie = cookie("accessToken", $response['token']);
+
+        return response()->json([
+            "type" => "Refresh User Token",
+            "message" => "Token is Ok",
+            "data" => $response
+        ], 200)->withCookie($cookie);
     }
 }

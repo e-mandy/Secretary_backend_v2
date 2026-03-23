@@ -103,7 +103,7 @@ class AuthService{
             return [
                 "success" => true,
                 "data" => [
-                        "user" => [
+                    "user" => [
                         "email" => $createdUser->email,
                         "lastname" => $createdUser->lastname,
                         "firstname" => $createdUser->firstname,
@@ -113,5 +113,22 @@ class AuthService{
                 ]
             ];
         }
+    }
+
+    public function check(User $user){
+        $token = $user->createToken(
+            'Token Connexion User: '. $user->email,
+            ["*"]
+        );
+
+        return [
+            "user" => [
+                "email" => $user->email,
+                "lastname" => $user->lastname,
+                "firstname" => $user->firstname,
+                "role" => $user->role
+            ],
+            "token" => $token
+        ];
     }
 }
