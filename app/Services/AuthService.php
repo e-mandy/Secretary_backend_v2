@@ -24,10 +24,19 @@ class AuthService{
         $isMatch = Hash::check($data->password, $user->password);
         if(!$isMatch) throw new \Exception("Données invalides");
 
-        $token = $user->createToken(
-            "Token Connexion User: " . $user->email,
-            ["*"]
+        $refresh_token = $user->createToken(
+            "Refresh Token Connexion User: " . $user->email,
+            ["*"],
+            now()->addDays(7)
         );
+
+        $access_token = $user->createToken(
+            "Access token Connexion User: ". $user->email,
+            ["*"],
+            now()->addMinute(15)
+        );
+
+        
 
         return [
             "user" => [
@@ -36,7 +45,8 @@ class AuthService{
                 "firstname" => $user->firstname,
                 "role" => $user->role
             ],
-            "access_token" => $token
+            "access_token" => $access_token,
+            "refresh_token" => $refresh_token
         ];
     }
 
@@ -80,7 +90,17 @@ class AuthService{
         $isMatch = Hash::check($data->password, $user->password);
         if(!$isMatch) throw new \Exception("Données invalides");
 
-        $token = $user->createToken("Token Connexion User: " . $user->email);
+        $refresh_token = $user->createToken(
+            "Refresh Token Connexion User: " . $user->email,
+            ["*"],
+            now()->addDays(7)
+        );
+
+        $access_token = $user->createToken(
+            "Access token Connexion User: ". $user->email,
+            ["*"],
+            now()->addMinute(15)
+        );
 
         return [
             "user" => [
@@ -89,7 +109,8 @@ class AuthService{
                 "firstname" => $user->firstname,
                 "role" => $user->role
             ],
-            "access_token" => $token
+            "access_token" => $access_token,
+            "refresh_token" => $refresh_token
         ];
     }
 
@@ -99,7 +120,10 @@ class AuthService{
         if(!hash_equals((string) $data->hash, sha1($createdUser->getEmailForVerification()))) throw new Exception("Lien de vérification invalide");
 
         if($createdUser->markEmailAsVerified()){
-            $token = $createdUser->createToken('Token Register User: '. $createdUser->email);
+            $access_token = $createdUser->createToken(
+                'Token Register User: '. $createdUser->email,
+
+            );
             return [
                 "success" => true,
                 "data" => [
@@ -109,7 +133,7 @@ class AuthService{
                         "firstname" => $createdUser->firstname,
                         "role" => $createdUser->role
                     ],
-                    "token" => $token
+                    "token" => $access_token
                 ]
             ];
         }
@@ -118,7 +142,7 @@ class AuthService{
     public function check(User $user){
         $token = $user->createToken(
             'Token Connexion User: '. $user->email,
-            ["*"]
+            ["*"],
         );
 
         return [
