@@ -19,7 +19,7 @@ Route::post('/secretary/register', [SecretaryController::class, 'register']);
 Route::get('/secretary/email-verify/{id}/{hash}', [SecretaryController::class, 'verify'])->name('verification.verify')->middleware('signed');
 
 Route::middleware(['auth:sanctum'])->group(function(){
-    Route::get('/refresh', [SecretaryController::class, 'checkAuth']);
+    Route::get('/refresh', [SecretaryController::class, 'refresh']);
 });
 
 // ---- Professor Module Routes ---- //

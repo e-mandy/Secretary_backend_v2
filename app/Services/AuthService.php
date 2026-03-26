@@ -30,7 +30,7 @@ class AuthService{
         $refresh_token = $user->generateRefreshToken();
 
         $user->refresh_tokens()->create([
-            "token" => $refresh_token,
+            "token" => $refresh_token->plainTextToken,
             "expires_at" => $user->getTokenExpiryDelay($refresh_token)
         ]);
 
@@ -91,7 +91,7 @@ class AuthService{
         $refresh_token = $user->generateRefreshToken();
 
         $user->refresh_tokens()->create([
-            "token" => $refresh_token,
+            "token" => $refresh_token->plainTextToken,
             "expires_at" => $user->getTokenExpiryDelay($refresh_token)
         ]);
 
@@ -102,8 +102,8 @@ class AuthService{
                 "firstname" => $user->firstname,
                 "role" => $user->role
             ],
-            "access_token" => $access_token,
-            "refresh_token" => $refresh_token
+            "access_token" => $access_token->plainTextToken,
+            "refresh_token" => $refresh_token->plainTextToken
         ];
     }
 
@@ -118,7 +118,7 @@ class AuthService{
             $refresh_token = $createdUser->generateRefreshToken();
 
             $createdUser->refresh_tokens()->create([
-                "token" => $refresh_token,
+                "token" => $refresh_token->plainTextToken,
                 "expires_at" => $createdUser->getTokenExpiryDelay($refresh_token)
             ]);
 
@@ -131,8 +131,8 @@ class AuthService{
                         "firstname" => $createdUser->firstname,
                         "role" => $createdUser->role
                     ],
-                    "access_token" => $access_token,
-                    "refresh_token" => $refresh_token
+                    "access_token" => $access_token->plainTextToken,
+                    "refresh_token" => $refresh_token->plainTextToken
                 ]
             ];
         }
@@ -148,7 +148,7 @@ class AuthService{
         $refresh_token = $user->generateRefreshToken();
 
         $user->refresh_tokens()->create([
-            "token" => $refresh_token,
+            "token" => $refresh_token->plainTextToken,
             "expires_at" => $user->getTokenExpiryDelay($refresh_token)
         ]);
 
@@ -159,8 +159,8 @@ class AuthService{
                 "firstname" => $user->firstname,
                 "role" => $user->role
             ],
-            "access_token" => $access_token,
-            "refresh_token" => $refresh_token
+            "access_token" => $access_token->plainTextToken,
+            "refresh_token" => $refresh_token->plainTextToken
         ];
     }
 }
