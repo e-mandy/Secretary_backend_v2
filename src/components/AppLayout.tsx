@@ -2,6 +2,7 @@ import { Outlet } from "react-router-dom"
 import NavBar from "./NavBar"
 import { SidebarProvider } from "./ui/sidebar"
 import AppSideBar from "./AppSideBar"
+import PathFormater from "./PathFormater"
 
 const AppLayout = () => {
   
@@ -17,6 +18,7 @@ const AppLayout = () => {
                         <NavBar />
                     </div>
                     <div className="mt-24">
+                        <PathFormater />
                         <Outlet />
                     </div>
                 </div>

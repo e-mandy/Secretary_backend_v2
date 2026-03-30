@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import Spinner from '../../../components/Spinner';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useRefreshToken } from '../../../hooks/useRefreshToken';
@@ -9,6 +9,7 @@ const PersistLogin = () => {
     const [isLoading, setIsLoading] = useState(true);
     const isAuth = useAuth();
     const navigate = useNavigate();
+    const isCalled = useRef(false);
 
     useEffect(() => {
         const verifyRefreshToken = async () => {
@@ -16,14 +17,19 @@ const PersistLogin = () => {
                 await refresh();
             }catch(e: any){
                 if(e?.response?.status === 401 || e?.response?.status === 403) {
-                navigate('/secretary/login', { replace: true });
-            }
+                    console.log("Ça marche pas");
+                    navigate('/secretary/login', { replace: true });
+                }
             }finally{
                 setIsLoading(false);
             }
         }
 
-        isAuth ? setIsLoading(false) : verifyRefreshToken();
+        if(!isCalled.current){
+            isCalled.current = true;
+            isAuth ? setIsLoading(false) : verifyRefreshToken();
+        }
+
     }, []);
 
   return isLoading ? (
