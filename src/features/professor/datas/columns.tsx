@@ -3,13 +3,24 @@
 import { type ColumnDef } from "@tanstack/react-table"
 import type { ProfessorType } from "../schemas/professor.schema"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "../../../components/ui/dropdown-menu";
-import { Edit, Eye, MoreHorizontal, Trash } from "lucide-react";
+import { ArrowUpDown, Edit, Eye, MoreHorizontal, Trash } from "lucide-react";
 import { Button } from "../../../components/ui/button";
 
 export const columns: ColumnDef<ProfessorType>[] = [
     {
         accessorKey: "email",
-        header: "Adresse email"
+        header: ({ column }) => {
+        return (
+                <Button
+                    className="font-bold text-left"
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    Adresse Email
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                </Button>
+            )
+        },
     },
     {
         accessorKey: "lastname",
