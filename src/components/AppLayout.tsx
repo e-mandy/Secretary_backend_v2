@@ -17,7 +17,7 @@ const AppLayout = () => {
                     <div className="absolute top-0 w-full bg-white h-20">
                         <NavBar />
                     </div>
-                    <div className="mt-24">
+                    <div className="mt-20">
                         <PathFormater />
                         <Outlet />
                     </div>

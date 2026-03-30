@@ -7,6 +7,7 @@ import Register from "./features/auth/components/Register"
 import { Routes, Route, BrowserRouter } from "react-router-dom"
 import Dashboard from "./features/dashboard/pages/Dashboard"
 import Professors from "./features/professor/components/Professors"
+import Documents from "./features/documents/components/Documents"
 
 function App() {
 
@@ -24,6 +25,7 @@ function App() {
             {/** Now we can set each module route. */}
             <Route path="/" element={<Dashboard />} />
             <Route  path="/secretary/professors" element={<Professors />} />
+            <Route path="/secretary/documents" element={<Documents />} />
           </Route>
         </Route>
       </Routes>

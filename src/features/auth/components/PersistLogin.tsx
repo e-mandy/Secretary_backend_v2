@@ -29,7 +29,6 @@ const PersistLogin = () => {
             isCalled.current = true;
             isAuth ? setIsLoading(false) : verifyRefreshToken();
         }
-
     }, []);
 
   return isLoading ? (
