@@ -1,0 +1,26 @@
+<?php
+
+namespace Database\Factories;
+
+use App\Models\Professor;
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+/**
+ * @extends Factory<Professor>
+ */
+class ProfessorFactory extends Factory
+{
+    /**
+     * Define the model's default state.
+     *
+     * @return array<string, mixed>
+     */
+    public function definition(): array
+    {
+        return [
+            "email" => fake()->unique()->safeEmail(),
+            "lastname" => fake()->name(),
+            "firstname" => fake()->name(),
+        ];
+    }
+}
