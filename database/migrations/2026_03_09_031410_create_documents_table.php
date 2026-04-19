@@ -15,9 +15,12 @@ return new class extends Migration
             $table->id();
             $table->string('label');
             $table->enum('type_doc', ["Curriculum Vitae", "Diplôme"]);
-            $table->foreignId('professor_id')->constrained()->cascadeOnDelete();
-
+            $table->string('file_mime_type')->after('type_doc');
+            $table->unsignedBigInteger('file_size')->after('file_mime_type');
+            $table->string("file_path")->after('label');
             $table->timestamps();
+            
+            $table->foreignId('professor_id')->constrained()->cascadeOnDelete();
         });
     }
 
