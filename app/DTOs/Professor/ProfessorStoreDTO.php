@@ -9,7 +9,7 @@ readonly class ProfessorStoreDTO{
         public string $lastname,
         public string $firstname,
         public string $email,
-        public array $matters
+        public ?array $matters
     )
     {}
 
