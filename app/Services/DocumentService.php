@@ -10,7 +10,7 @@ use Illuminate\Support\Str;
 
 class DocumentService{
     public function store(StoreContractRequest $request){
-        $file = $request->file('attachment');
+        $file = $request->file('documents');
         $file_path = $file->store('uploads/contracts', 'public');
 
         $data = [

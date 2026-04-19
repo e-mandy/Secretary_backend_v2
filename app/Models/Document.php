@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Storage;
 
 class Document extends Model
@@ -27,4 +28,8 @@ class Document extends Model
         );
     }
 
+    public function professor(): BelongsTo
+    {
+        return $this->belongsTo(Professor::class);
+    }
 }

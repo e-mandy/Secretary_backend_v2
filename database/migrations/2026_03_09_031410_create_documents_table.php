@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Professor;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -16,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('label');
             $table->enum('type_doc', ["Curriculum Vitae", "Diplôme"]);
-            $table->foreignId(Professor::class);
+            $table->foreignId('professor_id')->constrained()->cascadeOnDelete();
 
             $table->timestamps();
         });
