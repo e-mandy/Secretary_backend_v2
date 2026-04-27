@@ -11,7 +11,7 @@ use Illuminate\Support\Str;
 class DocumentService{
     public function store(StoreContractRequest $request){
         $file = $request->file('documents');
-        $file_path = $file->store('uploads/contracts', 'public');
+        $file_path = $file->store('uploads/documents', 'public');
 
         $data = [
             "title" => $request->input('title'),

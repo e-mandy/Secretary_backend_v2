@@ -25,7 +25,7 @@ class StoreProfessorRequest extends FormRequest
             "lastname" => ["required", "string"],
             "firstname" => ["required", "string"],
             "email" => ["required", "email", "string", "unique:professors"],
-            "matters" => ["nullable", "array"],
+            "matters" => ["required", "array"],
             // Check if the matters in the table exist in the database table.
             "matters*" => ["exists:matters,id"]
         ];

@@ -27,7 +27,7 @@ class ProfessorService{
             "email" => $data->email
         ]);
 
-        // To attach the professor to his different matters.
+        // To attach the professor to his different matters.ers);
         $professor->matters()->attach($data->matters);
         $professor->load('matters');
 

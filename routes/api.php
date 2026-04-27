@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ApiController\Auth\AdminController;
 use App\Http\Controllers\ApiController\Auth\SecretaryController;
+use App\Http\Controllers\ApiController\Document\DocumentController;
 use App\Http\Controllers\ApiController\Matter\MatterController;
 use App\Http\Controllers\ApiController\Professor\ProfessorController;
 use Illuminate\Support\Facades\Route;
@@ -28,3 +29,6 @@ Route::delete("/secretary/professor/{professorId}", [ProfessorController::class,
 
 // ---- Matter Module Routes ---- //
 Route::get("/matters", [MatterController::class, 'index']);
+
+// ---- Document Module Routes ---- //
+Route::post("/secretary/document/create", [DocumentController::class, 'store']);
