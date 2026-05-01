@@ -24,7 +24,7 @@ RUN composer dump-autoload --optimize --no-dev
 # 5. Droits d'exécution et permissions
 # Sur Render, il vaut mieux rester en root ou laisser Render gérer l'user, 
 # mais FrankenPHP a besoin de droits sur /data (pour Caddy)
-RUN chmod +x Docker/entry.sh && \
+RUN chmod +x Docker/entrypoint.sh && \
     mkdir -p storage/logs bootstrap/cache && \
     chmod -R 777 storage bootstrap/cache
 
