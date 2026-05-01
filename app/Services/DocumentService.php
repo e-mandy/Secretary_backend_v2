@@ -14,11 +14,10 @@ class DocumentService{
         $file_path = $file->store('uploads/documents', 'public');
 
         $data = [
-            "title" => $request->input('title'),
+            "title" => $file->getBasename(),
             "file_path" => $file_path,
             "file_mime_type" => $file->getMimeType(),
             "file_size" => $file->getSize(),
-            "description" => $request->input("description")
         ];
 
         $document = Document::create($data);
