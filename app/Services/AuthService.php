@@ -62,16 +62,13 @@ class AuthService{
 
         $emailHash = URL::temporarySignedRoute(
             'verification.verify',
-            now()->addMinute(20),
-            ['id' => $newUser->id, "hash" => sha1($newUser->email)]
+            now()->addMinutes(20),
+            ['id' => $newUser->id, "hash" => sha1($newUser->email)],
+            false
         );
 
-        // We change the app_url with the frontend url
-        $frontendUrl = str_replace(
-            config('app.url') . '/api',
-            env('FRONTEND_URL'),
-            $emailHash
-        );
+        // We cleanly construct the frontend URL, replacing the /api prefix from the generated route
+        $frontendUrl = rtrim(env('FRONTEND_URL'), '/') . preg_replace('|^/api|', '', $emailHash);
 
         // Asynchronous send of mail
         Mail::to($newUser)->send(new VerifyUserEmail($newUser, $frontendUrl));
