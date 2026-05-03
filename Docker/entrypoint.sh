@@ -37,9 +37,13 @@ php artisan migrate --force
 php artisan cache:clear
 php artisan config:clear
 php artisan route:clear
-php artisan queue:work
 
 chown -R unit:unit storage bootstrap/cache vendor
+
+# ✅ Queue worker en arrière-plan
+php artisan queue:work --sleep=3 --tries=3 --max-time=3600 &
+
+echo "Queue worker démarré (PID: $!)"
 
 # ✅ Utiliser FrankenPHP, pas artisan serve
 exec frankenphp run --config /app/Docker/Caddyfile
