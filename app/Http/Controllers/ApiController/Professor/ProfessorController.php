@@ -113,6 +113,15 @@ class ProfessorController extends Controller
         ], 201);
     }
 
+    public function show(Professor $professor){
+        $response = $this->service->show($professor);
+
+        return response()->json([
+            "type" => "Get Professor",
+            "message" => "Professeur trouvé avec succès"
+        ]);
+    }
+
     /**
      * @OA\Put(
      *     path="/api/secretary/professors/{professor}",
@@ -211,7 +220,7 @@ class ProfessorController extends Controller
         if($response) return response()->json([
             "type" => "Professor Delete",
             "message" => "Professeur supprimé avec succès"
-        ], 204);
+        ], 200);
         // The 204 status for NO CONTENT
     }
 }

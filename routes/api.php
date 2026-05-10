@@ -24,8 +24,8 @@ Route::post('/refresh', [SecretaryController::class, 'refresh']);
 // ---- Professor Module Routes ---- //
 Route::get("/secretary/professors", [ProfessorController::class, 'index']);
 Route::post("/secretary/professor/create", [ProfessorController::class, 'create']);
-Route::put("/secretary/professor/{professorId}", [ProfessorController::class, 'update']);
-Route::delete("/secretary/professor/{professorId}", [ProfessorController::class, "delete"]);
+Route::put("/secretary/professor/{professor}", [ProfessorController::class, 'update']);
+Route::delete("/secretary/professor/{professor}", [ProfessorController::class, "delete"]);
 
 // ---- Matter Module Routes ---- //
 Route::get("/matters", [MatterController::class, 'index']);

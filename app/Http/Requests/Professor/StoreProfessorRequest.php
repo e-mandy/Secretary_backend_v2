@@ -27,9 +27,9 @@ class StoreProfessorRequest extends FormRequest
             "email" => ["required", "email", "string", "unique:professors"],
             "matters" => ["required", "array"],
             // Check if the matters in the table exist in the database table.
-            "matters*" => ["exists:matters,id"],
+            "matters.*" => ["exists:matters,id"],
             "documents" => ['nullable', "array"],
-            "documents*" => ["file", "max:4096", "mimes:pdf,docx,png,jpeg"]
+            "documents.*" => ["nullable", "file", "max:4096", "mimes:pdf,docx,png,jpeg"]
         ];
     }
 }

@@ -58,6 +58,10 @@ class ProfessorService{
         });
     }
 
+    public function show(Professor $professor){
+        return new ProfessorResource($professor->load("matters"));
+    }
+
     public function update(Professor $professor, ProfessorUpdateDTO $data){
         // If there is any update about the table of matters, we synchronize with current database
         if($professor->has("matters")){
@@ -77,7 +81,7 @@ class ProfessorService{
     }
 
     public function destroy(Professor $professor){
-        if($professor->has("matter")) $professor->matters()->detach();
+        if($professor->has("matters")) $professor->matters()->detach();
 
         return $professor->delete();
     }
