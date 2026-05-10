@@ -119,7 +119,7 @@ class ProfessorController extends Controller
         return response()->json([
             "type" => "Get Professor",
             "message" => "Professeur trouvé avec succès"
-        ]);
+        ], 200);
     }
 
     /**
