@@ -11,10 +11,9 @@ class Document extends Model
 {
     protected $fillable = [
         "label",
-        "type_doc",
+        "file_path",
         "file_mime_type",
         "file_size",
-        "file_path",
 
         "professor_id"
     ];

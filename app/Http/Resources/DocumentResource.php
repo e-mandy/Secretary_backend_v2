@@ -16,7 +16,7 @@ class DocumentResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'contract_title' => $this->title,
+            'title' => $this->title,
             'metadata' => [
                 'size' => $this->file_size,
                 "type" => $this->file_mime_type,

@@ -22,6 +22,8 @@ class ProfessorResource extends JsonResource
 
             // Now, we have to include the matters for each professor.
             "matters" => MatterResource::collection($this->whenLoaded('matters')),
+            // We include the documents too
+            "documents" => DocumentResource::collection($this->whenLoaded("documents"))
         ];
     }
 }

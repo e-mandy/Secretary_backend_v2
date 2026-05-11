@@ -13,11 +13,10 @@ return new class extends Migration
     {
         Schema::create('documents', function (Blueprint $table) {
             $table->id();
-            $table->string('label');
-            $table->enum('type_doc', ["Curriculum Vitae", "Diplôme"]);
-            $table->string('file_mime_type')->after('type_doc');
-            $table->unsignedBigInteger('file_size')->after('file_mime_type');
-            $table->string("file_path")->after('label');
+            $table->string('title');
+            $table->string("file_path");
+            $table->string('file_mime_type');
+            $table->unsignedBigInteger('file_size');
             $table->timestamps();
             
             $table->foreignId('professor_id')->constrained()->cascadeOnDelete();

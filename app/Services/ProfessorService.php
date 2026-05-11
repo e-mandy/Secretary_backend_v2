@@ -35,7 +35,7 @@ class ProfessorService{
 
             // We check some likely documents
             if($request->hasFile("documents")){
-                foreach($request->file("document") as $file){
+                foreach($request->file("documents") as $file){
                     $file_path = $file->store('uploads/documents', 'public');
 
                     $data = [
@@ -59,7 +59,7 @@ class ProfessorService{
     }
 
     public function show(Professor $professor){
-        return new ProfessorResource($professor->load("matters"));
+        return new ProfessorResource($professor->load(["matters", "documents"]));
     }
 
     public function update(Professor $professor, ProfessorUpdateDTO $data){
