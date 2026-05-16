@@ -1,20 +1,19 @@
 #!/bin/sh
 
+# On quitte immédiatement si une commande échoue
+set -e
+
 if [ ! -f "vendor/autoload.php" ]; then
-    composer install --no-progress --no-interaction
-    
+    echo "Installation des dépendances (Fallback)..."
+    composer install --no-progress --no-interaction --optimize-autoloader --no-dev
 fi
 
 if [ ! -f ".env" ]; then
-
-    echo "Creating env file for $APP_ENV"
+    echo "Creating env file"
     cp .env.example .env
-    # Écrire APP_KEY dans .env si fournie en env var
     if [ -n "$APP_KEY" ]; then
         sed -i "s|APP_KEY=.*|APP_KEY=$APP_KEY|" .env
     fi
-else
-    echo "env file exists"
 fi
 
 echo "Waiting for database ($DB_HOST:$DB_PORT)..."
@@ -24,29 +23,31 @@ until pg_isready -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USERNAME"; do
 done
 echo "Database is up!"
 
-
 if ! grep -Eq '^APP_KEY=.+$' .env; then
-    echo "APP_KEY absente, génération de la clé applicative"
+    echo "Génération de la clé applicative..."
     php artisan key:generate
-else
-    echo "APP_KEY déjà définie, aucune régénération"
 fi
 
-composer require jenssegers/agent
-php artisan migrate:fresh --seed
-php artisan migrate --force
-php artisan db:seed --force
-php artisan cache:clear
-php artisan config:clear
-php artisan route:clear
+# ---------------------------------------------------------------------
+# ZONE MIGRATION : Nettoyage forcé et unique
+# ---------------------------------------------------------------------
+echo "Remplacement complet de la base de données..."
+php artisan migrate:fresh --force --seed
+# ---------------------------------------------------------------------
 
-chown -R unit:unit storage bootstrap/cache vendor
+# Optimisations Laravel pour la production
+echo "Nettoyage et mise en cache des configurations..."
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
 
-# ✅ Queue worker en arrière-plan
-php artisan queue:work --sleep=3 --tries=3 --max-time=3600 &
+# Droits d'accès pour FrankenPHP / Nginx unit
+chown -R unit:unit storage bootstrap/cache
 
-echo "Queue worker démarré (PID: $!)"
+# ✅ Queue worker en arrière-plan (Redirection des logs pour éviter de bloquer)
+php artisan queue:work --sleep=3 --tries=3 --max-time=3600 > /dev/null 2>&1 &
+echo "Queue worker démarré en arrière-plan."
 
-
-# ✅ Utiliser FrankenPHP, pas artisan serve
+# ✅ Lancement du serveur d'application (FrankenPHP)
+echo "Démarrage de FrankenPHP..."
 exec frankenphp run --config /app/Docker/Caddyfile
