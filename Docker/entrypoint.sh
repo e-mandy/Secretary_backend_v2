@@ -35,19 +35,19 @@ echo "Remplacement complet de la base de données..."
 php artisan migrate:fresh --force --seed
 # ---------------------------------------------------------------------
 
-# Optimisations Laravel pour la production
+## Optimisations Laravel pour la production
 echo "Nettoyage et mise en cache des configurations..."
 php artisan config:cache
 php artisan route:cache
 php artisan view:cache
 
-# Droits d'accès pour FrankenPHP / Nginx unit
-chown -R unit:unit storage bootstrap/cache
+# Droits d'accès
+chmod -R 775 storage bootstrap/cache
 
-# ✅ Queue worker en arrière-plan (Redirection des logs pour éviter de bloquer)
+# Queue worker en arrière-plan
 php artisan queue:work --sleep=3 --tries=3 --max-time=3600 > /dev/null 2>&1 &
 echo "Queue worker démarré en arrière-plan."
 
-# ✅ Lancement du serveur d'application (FrankenPHP)
+# Lancement de FrankenPHP
 echo "Démarrage de FrankenPHP..."
 exec frankenphp run --config /app/Docker/Caddyfile
