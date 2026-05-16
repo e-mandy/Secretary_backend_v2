@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Storage;
 class Document extends Model
 {
     protected $fillable = [
-        "label",
+        "title",
         "file_path",
         "file_mime_type",
         "file_size",
@@ -22,10 +22,10 @@ class Document extends Model
     protected $appends = ["file_url"];
 
     // Accessor to display the file size
-    protected function file_url(): Attribute
+    protected function fileUrl(): Attribute
     {
         return Attribute::make(
-            get: fn () => Storage::url($this->file_path)
+            get: fn () => Storage::disk('public')->url($this->file_path)
         );
     }
 

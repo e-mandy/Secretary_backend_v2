@@ -32,4 +32,4 @@ Route::delete("/secretary/professor/{professor}", [ProfessorController::class, "
 Route::get("/matters", [MatterController::class, 'index']);
 
 // ---- Document Module Routes ---- //
-Route::post("/secretary/document/create", [DocumentController::class, 'store']);
+Route::get("/documents/{document}/download", [DocumentController::class, 'download']);

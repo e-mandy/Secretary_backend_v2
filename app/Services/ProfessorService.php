@@ -38,15 +38,15 @@ class ProfessorService{
                 foreach($request->file("documents") as $file){
                     $file_path = $file->store('uploads/documents', 'public');
 
-                    $data = [
-                        "title" => $file->getBasename(),
+                    $documentData = [
+                        "title" => pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME),
                         "file_path" => $file_path,
-                        "file_mime_type" => $file->getMimeType(),
+                        "file_mime_type" => $file->getClientMimeType(),
                         "file_size" => $file->getSize(),
                         "professor_id" => $professor->id
                     ];
 
-                    $document = Document::create($data);
+                    $document = Document::create($documentData);
                 }
             }
     
