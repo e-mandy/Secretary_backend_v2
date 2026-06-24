@@ -29,6 +29,7 @@ class StoreDefenseReportRequest extends FormRequest
             "note" => ["required", "decimal:0,2"],
             "option" => ["required", OptionType::class],
             "filiere" => ["required", FiliereType::class],
+            "defense_date" => ["required", "date_format:"],
             "file" => ["required", "file", "mimes:pdf", "max:4096"]
         ];
     }
