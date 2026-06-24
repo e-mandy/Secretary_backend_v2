@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Professor;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreContractRequest extends FormRequest
+class SearchProfessorRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -17,14 +17,12 @@ class StoreContractRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
         return [
-            "title" => ["required", "string", "max:150"],
-            "description" => ["string", "nullable"],
-            "attachment" => ["required", "file", "mimes:pdf,docx", "max:10240"]
+            "search" => ["string", "required"]
         ];
     }
 }

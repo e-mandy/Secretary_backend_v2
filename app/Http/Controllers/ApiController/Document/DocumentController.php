@@ -26,13 +26,13 @@ class DocumentController extends Controller
         ], 201);
     }
 
-    // public function destroy(Document $document){
-    //     $response = $this->service->delete($document);
+    public function delete(Document $document){
+        $response = $this->service->delete($document);
 
-    //     return response()->json([
-    //         "message" => $response ? "Contrat supprimé avec succès" : "Erreur de suppression du contrat",
-    //     ], $response ? 200 : 500);
-    // }
+        return response()->json([
+            "message" => $response ? "Document supprimé avec succès." : "Erreur de suppression du document !",
+        ], $response ? 200 : 500);
+    }
 
     public function download(Document $document){
         return $this->service->download($document);

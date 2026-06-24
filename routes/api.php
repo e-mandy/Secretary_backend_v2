@@ -27,9 +27,11 @@ Route::get('/secretary/professor/{professor}', [ProfessorController::class, 'sho
 Route::post("/secretary/professor/create", [ProfessorController::class, 'create']);
 Route::put("/secretary/professor/{professor}", [ProfessorController::class, 'update']);
 Route::delete("/secretary/professor/{professor}", [ProfessorController::class, "delete"]);
+Route::post("/secretary/documents/{professor}/add", [ProfessorController::class, "addDocument"]);
 
 // ---- Matter Module Routes ---- //
 Route::get("/matters", [MatterController::class, 'index']);
 
 // ---- Document Module Routes ---- //
 Route::get("/documents/{document}/download", [DocumentController::class, 'download']);
+Route::delete("/documents/{document}", [DocumentController::class, "delete"]);

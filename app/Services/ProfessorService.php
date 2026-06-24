@@ -9,6 +9,7 @@ use App\Http\Resources\ProfessorResource;
 use App\Models\Document;
 use App\Models\Professor;
 use Illuminate\Support\Facades\DB;
+use SearchProfessorDTO;
 
 class ProfessorService{
 
@@ -58,6 +59,27 @@ class ProfessorService{
         });
     }
 
+    /**
+     * @param array<\Illuminate\Http\UploadedFile> $files
+     */
+    public function addDocument(Professor $professor, array $files){
+        if(!$files) abort(404, "Aucun fichier uploadé.");
+
+        foreach($files as $file){
+            $file_path = $file->store("uploads/documents", "public");
+
+            $professor->documents()->create([
+                "title" => pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME),
+                "file_path" => $file_path,
+                "file_mime_type" => $file->getClientMimeType(),
+                "file_size" => $file->getSize()
+                // professor_id is already in the table.
+            ]);
+        }
+
+        return true;
+    }
+
     public function show(Professor $professor){
         return new ProfessorResource($professor->load(["matters", "documents"]));
     }
@@ -84,5 +106,16 @@ class ProfessorService{
         if($professor->has("matters")) $professor->matters()->detach();
 
         return $professor->delete();
+    }
+
+    public function search(SearchProfessorDTO $data){
+        $professors = Professor::query()
+            ->where("email", $data->search)
+            ->orWhere("lastname", $data->search)
+            ->orWhere("firstname", $data->search)
+            ->orderBy('created_at')
+            ->select("id", "lastname", "firstname");
+
+        return $professors;
     }
 }

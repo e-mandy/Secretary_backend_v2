@@ -32,7 +32,7 @@ fi
 # ZONE MIGRATION : Nettoyage forcé et unique
 # ---------------------------------------------------------------------
 echo "Remplacement complet de la base de données..."
-php artisan migrate:fresh --force --seed
+php artisan migrate:migrate --force --seed
 # ---------------------------------------------------------------------
 
 ## Optimisations Laravel pour la production

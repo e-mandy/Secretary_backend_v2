@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Http\Requests\Document\StoreDocumentRequest;
 use App\Models\Document;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -51,10 +50,10 @@ class DocumentService{
     //     return $document->fresh();
     // }
 
-    // public function delete(Document $document){
-    //     $path = $document->file_path;
-    //     $result = $document->delete() ? Storage::disk('public')->delete($path) : false;
+    public function delete(Document $document){
+        $path = $document->file_path;
+        $result = $document->delete() ? Storage::disk('public')->delete($path) : false;
 
-    //     return $result;
-    // }
+        return $result;
+    }
 }
