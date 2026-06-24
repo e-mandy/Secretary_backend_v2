@@ -4,6 +4,7 @@ namespace App\Http\Controllers\ApiController\Professor;
 
 use App\DTOs\Professor\ProfessorStoreDTO;
 use App\DTOs\Professor\ProfessorUpdateDTO;
+use App\DTOs\Professor\SearchProfessorDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Professor\SearchProfessorRequest;
 use App\Http\Requests\Professor\StoreProfessorRequest;
@@ -11,7 +12,6 @@ use App\Http\Requests\Professor\UpdateProfessorRequest;
 use App\Http\Requests\ProfessorAddDocumentRequest;
 use App\Models\Professor;
 use App\Services\ProfessorService;
-use SearchProfessorDTO;
 
 class ProfessorController extends Controller
 {

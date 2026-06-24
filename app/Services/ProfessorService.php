@@ -4,12 +4,12 @@ namespace App\Services;
 
 use App\DTOs\Professor\ProfessorStoreDTO;
 use App\DTOs\Professor\ProfessorUpdateDTO;
+use App\DTOs\Professor\SearchProfessorDTO;
 use App\Http\Requests\Professor\StoreProfessorRequest;
 use App\Http\Resources\ProfessorResource;
 use App\Models\Document;
 use App\Models\Professor;
 use Illuminate\Support\Facades\DB;
-use SearchProfessorDTO;
 
 class ProfessorService{
 
@@ -110,9 +110,9 @@ class ProfessorService{
 
     public function search(SearchProfessorDTO $data){
         $professors = Professor::query()
-            ->where("email", $data->search)
-            ->orWhere("lastname", $data->search)
-            ->orWhere("firstname", $data->search)
+            ->where("email", 'LIKE', "%{$data->search}%")
+            ->orWhere("lastname", 'LIKE', "%{$data->search}%")
+            ->orWhere("firstname", 'LIKE', "%{$data->search}%")
             ->orderBy('created_at')
             ->select("id", "lastname", "firstname");
 
