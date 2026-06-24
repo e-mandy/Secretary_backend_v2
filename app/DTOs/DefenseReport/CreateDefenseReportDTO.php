@@ -1,8 +1,10 @@
 <?php
+namespace App\DTOs\DefenseReport;
 
 use App\Enums\FiliereType;
 use App\Enums\OptionType;
 use App\Http\Requests\DefenseReport\StoreDefenseReportRequest;
+use Carbon\Carbon;
 use Illuminate\Http\UploadedFile;
 
 readonly class CreateDefenseReportDTO {
@@ -25,7 +27,7 @@ readonly class CreateDefenseReportDTO {
             note: $data['note'],
             option: $data['option'],
             filiere: $data['filiere'],
-            defense_date: $data["defense_date"],
+            defense_date: Carbon::parse($data["defense_date"]),
             file: $request->file('file')
         );
     }

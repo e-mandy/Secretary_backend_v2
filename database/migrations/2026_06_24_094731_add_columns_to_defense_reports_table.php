@@ -16,6 +16,7 @@ return new class extends Migration
             $table->enum('option', ["AL", "SRC", "SI", "IA"]);
             $table->renameColumn("label", "theme");
             $table->decimal('note', 4, 2);
+            $table->string('defense_report_path');
         });
     }
 
