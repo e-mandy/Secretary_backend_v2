@@ -86,7 +86,7 @@ class ProfessorController extends Controller
         if($response) return response()->json([
             "type" => "Professor Delete",
             "message" => "Professeur supprimé avec succès"
-        ], 200);
+        ], 204);
         // The 204 status for NO CONTENT
     }
 
