@@ -1,5 +1,7 @@
 <?php
 
+namespace App\DTOs\Professor;
+
 use App\Http\Requests\Professor\SearchProfessorRequest;
 
 readonly class SearchProfessorDTO {
