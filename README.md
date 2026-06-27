@@ -1,59 +1,287 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Secretary Backend API — Integration Guide
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+REST API for managing secretary operations. Base URL for all endpoints: `{APP_URL}/api`
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Authentication
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Most endpoints require a Bearer token obtained from login.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+```
+Authorization: Bearer <access_token>
+```
 
-## Learning Laravel
+Access tokens expire after **15 minutes**. Use the refresh endpoint with the `refresh_token` cookie to obtain a new pair without re-logging in.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+### Login
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+```
+POST /secretary/login
+Content-Type: application/json
+```
 
-## Laravel Sponsors
+**Body**
+```json
+{
+  "email": "secretary@example.com",
+  "password": "password"
+}
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+**Response `200`**
+```json
+{
+  "type": "Secretary Login",
+  "message": "Connexion réussie",
+  "data": {
+    "access_token": "<token>",
+    "token_type": "Bearer"
+  }
+}
+```
 
-### Premium Partners
+> A `refresh_token` HttpOnly cookie is also set automatically.
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### Refresh Token
 
-## Contributing
+```
+POST /refresh
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+No body needed — the refresh token is read from the cookie.
 
-## Code of Conduct
+**Response `200`** — same shape as login, issues a new access token and rotates the refresh cookie.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+---
 
-## Security Vulnerabilities
+## Allowed Enum Values
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+These values are enforced by the API. Any other value returns `422`.
 
-## License
+| Field | Accepted values |
+|---|---|
+| `filiere` | `Master`, `Licence` |
+| `option` | `AL`, `SI`, `SRC`, `IA` |
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
+
+## Defense Report Module
+
+Manages defense proceedings (PV de soutenance). All files must be **PDF**, max **4 MB**.
+
+### Resource shape
+
+Every endpoint that returns a defense report uses this structure:
+
+```json
+{
+  "id": 1,
+  "owner": "Jean Dupont",
+  "theme": "Intelligence artificielle appliquée à la santé",
+  "defense_date": "2025-06-20",
+  "filiere": "Master",
+  "option": "IA",
+  "note": 16.50,
+  "file_url": "http://yourapp.com/storage/uploads/defense_reports/report.pdf",
+  "created_at": "2025-06-20T09:00:00.000000Z"
+}
+```
+
+---
+
+### List defense reports
+
+```
+GET /secretary/defense-reports?page=1
+Authorization: Bearer <token>
+```
+
+Returns **10 records per page**, sorted by newest first.
+
+**Response `200`**
+```json
+{
+  "type": "Get Defense Reports",
+  "data": {
+    "data": [ ...defense report objects... ],
+    "links": {
+      "first": ".../defense-reports?page=1",
+      "last":  ".../defense-reports?page=4",
+      "prev":  null,
+      "next":  ".../defense-reports?page=2"
+    },
+    "meta": {
+      "current_page": 1,
+      "last_page": 4,
+      "per_page": 10,
+      "total": 38,
+      "from": 1,
+      "to": 10
+    }
+  }
+}
+```
+
+> Navigate pages with `?page=N`. When `links.next` is `null` you are on the last page.
+
+---
+
+### Get a single defense report
+
+```
+GET /secretary/defense-report/{id}
+Authorization: Bearer <token>
+```
+
+**Response `200`**
+```json
+{
+  "type": "Get Defense Report",
+  "data": { ...defense report object... }
+}
+```
+
+**Response `404`** — record not found.
+
+---
+
+### Create a defense report
+
+```
+POST /secretary/defense-report/create
+Authorization: Bearer <token>
+Content-Type: multipart/form-data
+```
+
+**Fields**
+
+| Field | Type | Required | Rules |
+|---|---|---|---|
+| `owner` | string | yes | Student / candidate full name |
+| `theme` | string | yes | Max 255 characters |
+| `defense_date` | string | yes | Format `YYYY-MM-DD` |
+| `filiere` | string | yes | `Master` or `Licence` |
+| `option` | string | yes | `AL`, `SI`, `SRC`, or `IA` |
+| `note` | decimal | yes | Up to 2 decimal places (e.g. `16.50`) |
+| `file` | file | yes | PDF only, max 4 MB |
+
+**Example request (curl)**
+```bash
+curl -X POST http://yourapp.com/api/secretary/defense-report/create \
+  -H "Authorization: Bearer <token>" \
+  -F "owner=Jean Dupont" \
+  -F "theme=IA appliquée à la santé" \
+  -F "defense_date=2025-06-20" \
+  -F "filiere=Master" \
+  -F "option=IA" \
+  -F "note=16.50" \
+  -F "file=@/path/to/report.pdf"
+```
+
+**Response `201`**
+```json
+{
+  "type": "Defense Report Storage",
+  "message": "PV de soutenance créé avec succès",
+  "data": { ...defense report object... }
+}
+```
+
+---
+
+### Update a defense report
+
+All fields are optional — send only what changed. If a new `file` is provided the old PDF is deleted automatically.
+
+```
+PUT /secretary/defense-report/{id}
+Authorization: Bearer <token>
+Content-Type: multipart/form-data
+```
+
+**Fields** — same as create, all `optional`
+
+**Response `200`**
+```json
+{
+  "type": "Defense Report Update",
+  "message": "PV de soutenance mis à jour avec succès",
+  "data": { ...updated defense report object... }
+}
+```
+
+**Response `404`** — record not found.
+
+---
+
+### Delete a defense report
+
+Deletes the record and removes the associated PDF from storage.
+
+```
+DELETE /secretary/defense-report/{id}
+Authorization: Bearer <token>
+```
+
+**Response `200`**
+```json
+{
+  "type": "Defense Report Delete",
+  "message": "PV de soutenance supprimé avec succès"
+}
+```
+
+**Response `404`** — record not found.
+
+---
+
+## Common Error Responses
+
+| Status | Meaning |
+|---|---|
+| `400` | Bad request (business rule violation, e.g. duplicate email) |
+| `401` | Missing or expired access token |
+| `404` | Resource not found (Route Model Binding returns this automatically) |
+| `422` | Validation failed — response includes a `errors` object keyed by field name |
+| `500` | Server error |
+
+**Validation error shape (`422`)**
+```json
+{
+  "message": "The filiere field is required.",
+  "errors": {
+    "filiere": ["The filiere field is required."],
+    "file": ["The file field must be a file of type: pdf."]
+  }
+}
+```
+
+---
+
+## Other Modules
+
+### Professors
+
+| Method | URL | Description |
+|---|---|---|
+| `GET` | `/secretary/professors` | List professors (10 per page) |
+| `GET` | `/secretary/professors/search?search=query` | Search by name or email |
+| `GET` | `/secretary/professor/{id}` | Get professor with matters and documents |
+| `POST` | `/secretary/professor/create` | Create professor (`multipart/form-data`, optional `documents[]`) |
+| `PUT` | `/secretary/professor/{id}` | Update professor |
+| `DELETE` | `/secretary/professor/{id}` | Delete professor |
+| `POST` | `/secretary/documents/{professor_id}/add` | Attach documents to a professor |
+
+### Matters
+
+| Method | URL | Description |
+|---|---|---|
+| `GET` | `/matters` | List all matters (no auth required) |
+
+### Documents
+
+| Method | URL | Description |
+|---|---|---|
+| `GET` | `/documents/{id}/download` | Download a document file |
+| `DELETE` | `/documents/{id}` | Delete a document |
