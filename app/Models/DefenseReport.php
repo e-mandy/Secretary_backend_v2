@@ -13,6 +13,6 @@ class DefenseReport extends Model
         "filiere",
         "note",
         "option",
-        "file_path"
+        "defense_report_path"
     ];
 }

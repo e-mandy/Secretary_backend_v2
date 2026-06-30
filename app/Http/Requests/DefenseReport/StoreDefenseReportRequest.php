@@ -5,6 +5,7 @@ namespace App\Http\Requests\DefenseReport;
 use App\Enums\FiliereType;
 use App\Enums\OptionType;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Enum;
 
 class StoreDefenseReportRequest extends FormRequest
 {
@@ -16,20 +17,15 @@ class StoreDefenseReportRequest extends FormRequest
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         return [
             "theme" => ["required", "string", "max:255"],
             "owner" => ["required", "string"],
             "note" => ["required", "decimal:0,2"],
-            "option" => ["required", OptionType::class],
-            "filiere" => ["required", FiliereType::class],
-            "defense_date" => ["required", "date_format:"],
+            "option" => ["required", new Enum(OptionType::class)],
+            "filiere" => ["required", new Enum(FiliereType::class)],
+            "defense_date" => ["required", "date_format:Y-m-d"],
             "file" => ["required", "file", "mimes:pdf", "max:4096"]
         ];
     }

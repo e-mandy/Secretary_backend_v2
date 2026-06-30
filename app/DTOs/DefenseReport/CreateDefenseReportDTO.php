@@ -25,9 +25,9 @@ readonly class CreateDefenseReportDTO {
             owner: $data['owner'],
             theme: $data['theme'],
             note: $data['note'],
-            option: $data['option'],
-            filiere: $data['filiere'],
-            defense_date: Carbon::parse($data["defense_date"]),
+            option: OptionType::from($data['option']),
+            filiere: FiliereType::from($data['filiere']),
+            defense_date: Carbon::parse($data["defense_date"])->toDateString(),
             file: $request->file('file')
         );
     }

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ApiController\Auth\AdminController;
 use App\Http\Controllers\ApiController\Auth\SecretaryController;
+use App\Http\Controllers\ApiController\DefenseReport\DefenseReportController;
 use App\Http\Controllers\ApiController\Document\DocumentController;
 use App\Http\Controllers\ApiController\Matter\MatterController;
 use App\Http\Controllers\ApiController\Professor\ProfessorController;
@@ -36,3 +37,10 @@ Route::get("/matters", [MatterController::class, 'index']);
 // ---- Document Module Routes ---- //
 Route::get("/documents/{document}/download", [DocumentController::class, 'download']);
 Route::delete("/documents/{document}", [DocumentController::class, "delete"]);
+
+// ---- Defense Report Module Routes ---- //
+Route::get("/secretary/defense-reports", [DefenseReportController::class, 'index']);
+Route::get("/secretary/defense-report/{defenseReport}", [DefenseReportController::class, 'show']);
+Route::post("/secretary/defense-report/create", [DefenseReportController::class, 'create']);
+Route::put("/secretary/defense-report/{defenseReport}", [DefenseReportController::class, 'update']);
+Route::delete("/secretary/defense-report/{defenseReport}", [DefenseReportController::class, 'delete']);
