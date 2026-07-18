@@ -1,33 +1,21 @@
 FROM dunglas/frankenphp:1-php8.4-alpine
 
-# Supprime les capacités étendues qui font peur à Render
-RUN setcap -r /usr/local/bin/frankenphp || true
-
-# 1. Install system dependencies
-RUN apk add --no-cache postgresql-client redis curl && \
-    install-php-extensions pdo_pgsql redis bcmath gd intl zip opcache
-
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+RUN apk add --no-cache bash curl git unzip libpq-dev oniguruma-dev libxml2-dev libzip-dev zip libpng-dev libjpeg-turbo-dev freetype-dev icu-dev && \
+    docker-php-ext-configure gd --with-freetype --with-jpeg && \
+    docker-php-ext-install pdo_pgsql pgsql bcmath gd intl zip opcache && \
+    curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 WORKDIR /app
 
-# 2. Copier les fichiers de dépendances d'abord pour optimiser le cache Docker
 COPY composer.json composer.lock ./
-RUN composer install --no-dev --no-scripts --no-autoloader --no-interaction
+RUN composer install --no-interaction --no-scripts --prefer-dist
 
-# 3. Copier le reste du projet
 COPY . .
 
-# 4. Finir l'installation de composer
-RUN composer dump-autoload --optimize --no-dev
-
-# 5. Droits d'exécution et permissions
-# Sur Render, il vaut mieux rester en root ou laisser Render gérer l'user, 
-# mais FrankenPHP a besoin de droits sur /data (pour Caddy)
-RUN chmod +x Docker/entrypoint.sh && \
-    mkdir -p storage/logs bootstrap/cache && \
-    chmod -R 777 storage bootstrap/cache
+RUN chmod +x /app/entrypoint.sh /app/Docker/entry.sh || true
+RUN composer dump-autoload --optimize
 
 ENV PORT=8000 HOST=0.0.0.0
+EXPOSE 8000
 
-ENTRYPOINT ["/app/Docker/entrypoint.sh"]
+ENTRYPOINT ["/bin/sh", "/app/entrypoint.sh"]
