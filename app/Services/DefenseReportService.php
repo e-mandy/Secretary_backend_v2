@@ -62,7 +62,7 @@ class DefenseReportService {
         $file_extenstion = pathinfo($defense_report->file_path, PATHINFO_EXTENSION);
         $file_name = Str::slug($defense_report->title, '-') . "." . $file_extenstion;
 
-        return Storage::disk('public')->download($defense_report->file_path, $file_name);
+        return Storage::disk('public')->download($defense_report->defense_report_path, $file_name);
     }
 
     public function destroy(DefenseReport $report): bool {
