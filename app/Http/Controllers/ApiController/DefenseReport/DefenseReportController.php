@@ -58,6 +58,10 @@ class DefenseReportController extends Controller
         ], 200);
     }
 
+    public function download(DefenseReport $defenseReport){
+        return $this->service->download($defenseReport);
+    }
+
     public function delete(DefenseReport $defenseReport){
         $this->service->destroy($defenseReport);
 

@@ -7,6 +7,7 @@ use App\DTOs\DefenseReport\UpdateDefenseReportDTO;
 use App\Http\Resources\DefenseReportResource;
 use App\Models\DefenseReport;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class DefenseReportService {
     public function index(){
@@ -53,6 +54,15 @@ class DefenseReportService {
         $report->fill($updateData)->save();
 
         return new DefenseReportResource($report->fresh());
+    }
+
+    public function download(DefenseReport $defense_report){
+        if(!Storage::disk('public')->exists($defense_report->file)) abort(404, "Fichier introuvable sur le serveur");
+
+        $file_extenstion = pathinfo($defense_report->file_path, PATHINFO_EXTENSION);
+        $file_name = Str::slug($defense_report->title, '-') . "." . $file_extenstion;
+
+        return Storage::disk('public')->download($defense_report->file_path, $file_name);
     }
 
     public function destroy(DefenseReport $report): bool {

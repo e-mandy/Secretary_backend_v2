@@ -44,3 +44,4 @@ Route::get("/secretary/defense-report/{defenseReport}", [DefenseReportController
 Route::post("/secretary/defense-report/create", [DefenseReportController::class, 'create']);
 Route::put("/secretary/defense-report/{defenseReport}", [DefenseReportController::class, 'update']);
 Route::delete("/secretary/defense-report/{defenseReport}", [DefenseReportController::class, 'delete']);
+Route::get("/defense-reports/{defenseReport}/download", [DefenseReportController::class, 'download']);
