@@ -70,4 +70,12 @@ class DefenseReportController extends Controller
             'message' => 'PV de soutenance supprimé avec succès',
         ], 200);
     }
+
+    public function pdf(DefenseReport $defenseReport){
+        $response = $this->service->getPDFUrl($defenseReport);
+
+        return response()->file($response, [
+            'Content-Type' => 'application/pdf'
+        ]);
+    }
 }

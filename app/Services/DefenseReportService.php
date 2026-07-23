@@ -70,4 +70,14 @@ class DefenseReportService {
 
         return (bool) DefenseReport::destroy($report->id);
     }
+
+    public function getPDFUrl(DefenseReport $defense_report){
+         $path = storage_path($defense_report->defense_report_path);
+    
+        if (!file_exists($path)) {
+            abort(404);
+        }
+
+        return $path;
+    }
 }
