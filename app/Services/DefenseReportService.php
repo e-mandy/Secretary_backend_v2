@@ -72,11 +72,7 @@ class DefenseReportService {
     }
 
     public function getPDFUrl(DefenseReport $defense_report){
-         $path = storage_path($defense_report->defense_report_path);
-    
-        if (!file_exists($path)) {
-            abort(404);
-        }
+         $path = storage_path("app/public/". $defense_report->defense_report_path);
 
         return $path;
     }
