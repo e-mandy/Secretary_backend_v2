@@ -58,6 +58,10 @@ class DefenseReportController extends Controller
         ], 200);
     }
 
+    public function download(DefenseReport $defenseReport){
+        return $this->service->download($defenseReport);
+    }
+
     public function delete(DefenseReport $defenseReport){
         $this->service->destroy($defenseReport);
 
@@ -65,5 +69,13 @@ class DefenseReportController extends Controller
             'type' => 'Defense Report Delete',
             'message' => 'PV de soutenance supprimé avec succès',
         ], 200);
+    }
+
+    public function pdf(DefenseReport $defenseReport){
+        $response = $this->service->getPDFUrl($defenseReport);
+
+        return response()->file($response, [
+            'Content-Type' => 'application/pdf'
+        ]);
     }
 }
